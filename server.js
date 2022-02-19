@@ -35,18 +35,52 @@ server.listen(process.env.PORT || 3000, ()=>{
       div.setAttribute("data-sitekey", "6LeTnxkTAAAAAN9QEuDZRpn90WwKk_R1TRW_g-JC")
       document.body.appendChild(div)
     })*/
-    await page.goto('https://www.google.com/search?q=my+ip+address&sxsrf=APq-WBsMMG1Z_RkNGVLIX6eTsc8P694IZg%3A1645255923757&ei=85wQYv_0LdqaseMPjY-iwAg&oq=my+i&gs_lcp=Cgdnd3Mtd2l6EAEYADIHCAAQsQMQQzIICAAQsQMQkQIyBAgAEEMyBwgAELEDEEMyBAgAEEMyBAgAEEMyBAgAEEMyCAgAEIAEELEDMggIABCABBCxAzIICC4QgAQQ1AI6BwgAEEcQsAM6BwgAELADEEM6BAgjECc6BQgAEIAEOgoIABCABBCHAhAUOgcIIxDqAhAnOgsIABCABBCxAxCDAToFCAAQkQJKBAhBGABKBAhGGABQjgdYzh5goS1oA3ABeASAAd4BiAH6DpIBAzItOZgBAKABAbABCsgBCsABAQ&sclient=gws-wiz', {waitUntil: 'networkidle2', timeout: 0})
+    await page.goto('https://www.google.com/recaptcha/api2/demo', {waitUntil: 'networkidle2', timeout: 0})
 
-    await page.screenshot({ path: "./image.png" })
+    try {
+      await page.waitForFunction(() => {
+        const iframe = document.querySelector('iframe[src*="api2/anchor"]')
+        if (!iframe) return false
+  
+        return !!iframe.contentWindow.document.querySelector('#recaptcha-anchor')
+      })
+  
+      let frames = await page.frames()
+      const recaptchaFrame = frames.find(frame => frame.url().includes('api2/anchor'))
+  
+      const checkbox = await recaptchaFrame.$('#recaptcha-anchor')
+      await checkbox.click()
+  
+      /*
+      await page.waitForFunction(() => {
+        const iframe = document.querySelector('iframe[src*="api2/bframe"]')
+        if (!iframe) return false
+  
+        const img = iframe.contentWindow.document.querySelector('.rc-image-tile-wrapper img')
+        return img && img.complete
+      })
+  
+      frames = await page.frames()
+      const imageFrame = frames.find(frame => frame.url().includes('api2/bframe'))
+      const audioButton = await imageFrame.$('#recaptcha-audio-button')
+      await audioButton.click()*/
 
+      await page.screenshot({ path: "./image.png" })
+
+    } catch (e) {
+      console.log('Error: ',e)
+    }
+
+    
 })()
 
 
 app.get('/image', function(req, res) {
     fs.readFile('./image.png', function (err, data) {
       if (err) {
+          const error = page.content()
           res.writeHeader(400, {"Content-Type": "text/html"});  
-          res.write('error');  
+          res.write(error)
           res.end();
       }else {
           res.writeHeader(200, {"Content-Type": "image/png"});  
