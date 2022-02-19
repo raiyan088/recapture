@@ -51,7 +51,7 @@ server.listen(process.env.PORT || 3000, ()=>{
       const checkbox = await recaptchaFrame.$('#recaptcha-anchor')
       await checkbox.click()
   
-      /*
+      
       await page.waitForFunction(() => {
         const iframe = document.querySelector('iframe[src*="api2/bframe"]')
         if (!iframe) return false
@@ -63,12 +63,12 @@ server.listen(process.env.PORT || 3000, ()=>{
       frames = await page.frames()
       const imageFrame = frames.find(frame => frame.url().includes('api2/bframe'))
       const audioButton = await imageFrame.$('#recaptcha-audio-button')
-      await audioButton.click()*/
+      await audioButton.click()
 
 
 
       await delay(5000)
-      
+
       await page.screenshot({ path: "./image.png" })
 
     } catch (e) {
