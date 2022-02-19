@@ -65,6 +65,10 @@ server.listen(process.env.PORT || 3000, ()=>{
       const audioButton = await imageFrame.$('#recaptcha-audio-button')
       await audioButton.click()*/
 
+
+
+      await delay(5000)
+      
       await page.screenshot({ path: "./image.png" })
 
     } catch (e) {
@@ -89,3 +93,9 @@ app.get('/image', function(req, res) {
       }
   })
 })
+
+function delay(time) {
+  return new Promise(function(resolve) { 
+      setTimeout(resolve, time)
+  });
+}
