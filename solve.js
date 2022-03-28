@@ -328,7 +328,7 @@ async function browserStart(start) {
 
     if(start) {
         mTotalGPUk80 = 0
-        database.child('server').child('load').set(LOAD)
+        //database.child('server').child('load').set(LOAD)
     }
     
     temp.forEach(function(value){
