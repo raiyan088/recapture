@@ -476,66 +476,9 @@ async function browserStart(start) {
                         await reOpenBrowser()
                     }
                 } else if(url.startsWith('https://colab.research.google.com/tun/m/assign?')) {
-                    if(!mFinish) {
-                        if(mGPUt4) {
-                            RUNING--
-                            database.child('server').child('runing').set(RUNING)
-                            if(mAuth) {
-                                database.child('ngrok').child(mAuth).set(true)
-                            }
-                        }
-                        statusRun++
-                        mIP = null
-                        mAuth = null
-                        mFinish = true
-                        mMining = false
-                        mNotAuth = 0
-                        mPageLoad = false
-                        let key = getKey(parseInt(LOAD/10))
-                        let key2 = keyData.get(LOAD).replace('@gmail.com', '')
-                        database.child('gmail').child(key).child('GMAIL').child(key2).set(false)
-                        allData[key]['GMAIL'][key2] = false
-                        console.log('Id: '+R(LOAD)+' Status: '+R('Terminated gmail...')+' Gmail: '+R(keyData.get(LOAD)))
-                        await delay(2000)
-                        console.log('wait 2s')
-                        await reOpenBrowser()
-                    }
-                } else if(url.startsWith('https://colab.research.google.com/tun/m/gpu-t4')) {
-                    if(!mFinish) {
-                        if(mGPUt4) {
-                            RUNING--
-                            database.child('server').child('runing').set(RUNING)
-                            if(mAuth) {
-                                database.child('ngrok').child(mAuth).set(true)
-                            }
-                        }
-                        statusRun++
-                        mIP = null
-                        mAuth = null
-                        mFinish = true
-                        mMining = false
-                        mNotAuth = 0
-                        mPageLoad = false
-                        if(mGPUt4) {
-                            const now = parseInt(new Date().getTime() / 1000)
-                            const minute = parseInt((now - mActiveTime) / 60)
-                            const secound = parseInt((now - mActiveTime) % 60)
-                            if(minute > 70) {
-                                console.log('Id: '+G(LOAD)+' Runing: '+G(minute+'m '+secound+'s')+' Status: '+G('Completed')+' Gmail: '+G(keyData.get(LOAD)))
-                            } else {
-                                console.log('Id: '+R(LOAD)+' Runing: '+R(minute+'m '+secound+'s')+' Status: '+R('Terminated gmail...')+' Gmail: '+R(keyData.get(LOAD)))
-                            }
-                        } else {
-                            console.log('Id: '+R(LOAD)+' Status: '+R('Terminated gmail...')+' Gmail: '+R(keyData.get(LOAD)))
-                        }
-                        let key = getKey(parseInt(LOAD/10))
-                        let key2 = keyData.get(LOAD).replace('@gmail.com', '')
-                        database.child('gmail').child(key).child('GMAIL').child(key2).set(false)
-                        allData[key]['GMAIL'][key2] = false
-                        await delay(2000)
-                        console.log('wait 2s')
-                        await reOpenBrowser()
-                    }
+                    console.log('Id: '+R(LOAD)+' Status: '+R('Terminated gmail...')+' Gmail: '+R(keyData.get(LOAD)))
+                } else if(url.startsWith('https://colab.research.google.com/tun/m/gpu-')) {
+                    console.log('Id: '+R(LOAD)+' Status: '+R('Terminated gmail gpu...')+' Gmail: '+R(keyData.get(LOAD)))
                 }
             }
         } catch (err) {}
@@ -869,7 +812,7 @@ async function solveRecaptchas() {
                             return document.querySelector('div[class="rc-doscaptcha-header"]')
                         })
                         if(block  && !mGPUt4 && !mGPUk80) {
-                            if(mBlockCount >= 400) {
+                            if(mBlockCount >= 4) {
                                 mAudioBlock = true
                             }
                             statusRun++
