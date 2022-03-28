@@ -869,7 +869,7 @@ async function solveRecaptchas() {
                             return document.querySelector('div[class="rc-doscaptcha-header"]')
                         })
                         if(block  && !mGPUt4 && !mGPUk80) {
-                            if(mBlockCount >= 4) {
+                            if(mBlockCount >= 400) {
                                 mAudioBlock = true
                             }
                             statusRun++
